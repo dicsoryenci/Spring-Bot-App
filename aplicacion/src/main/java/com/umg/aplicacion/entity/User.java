@@ -1,6 +1,7 @@
 package com.umg.aplicacion.entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -59,13 +60,14 @@ public class User implements Serializable {
 	@NotBlank
 	private String confirmPassword;
 	
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_roles",
 			joinColumns=@JoinColumn(name="user_id"),
 			inverseJoinColumns=@JoinColumn(name="role_id"))
 	private Set<Role> roles;
 	
-	public User() {	
+	public User() {
 	}
 	
 	public User(Long id) {
@@ -128,7 +130,7 @@ public class User implements Serializable {
 	public void setConfirmPassword(String confirmPassword) {
 		this.confirmPassword = confirmPassword;
 	}
-
+	
 	public Set<Role> getRoles() {
 		return roles;
 	}
@@ -210,9 +212,5 @@ public class User implements Serializable {
 			return false;
 		return true;
 	}       
-	
-	
-	
-	
 
 }
