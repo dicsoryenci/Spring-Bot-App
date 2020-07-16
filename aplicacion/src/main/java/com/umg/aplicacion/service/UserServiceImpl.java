@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.umg.aplicacion.Exception.UsernameOrIdNotFound;
 import com.umg.aplicacion.dto.ChangePasswordForm;
 import com.umg.aplicacion.entity.User;
 import com.umg.aplicacion.repository.UserRepository;
@@ -60,10 +62,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User getUserById(Long id) throws Exception {
+	public User getUserById(Long id) throws UsernameOrIdNotFound {
 		// TODO Auto-generated method stub
 		//Retorna un optional o sino encuentra lanza una exception
-		return repository.findById(id).orElseThrow(() -> new Exception("El usuario no existe."));
+		return repository.findById(id).orElseThrow(() -> new UsernameOrIdNotFound("El Id del usuario no existe."));
 	}
 
 	@Override
@@ -91,7 +93,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-	public void deleteUser(Long id) throws Exception {
+	public void deleteUser(Long id) throws UsernameOrIdNotFound {
 		// TODO Auto-generated method stub
 		User user = getUserById(id);
 		
