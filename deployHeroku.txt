@@ -1,0 +1,32 @@
+--Comandos para publicar la aplicación en heroku
+cd "C:\Users\Dicsor Hernández\git\spring_aplicacion\aplicacion"
+
+heroku login
+
+git remote -v
+
+git remote rm heroku
+
+git remote -v
+
+heroku login
+
+heroku keys:add
+
+git remote rm heroku
+
+git remote add heroku git@heroku.com:umg-proyecto-java-avanzada.git
+
+git init
+
+git add .
+
+git commit -m "first commit heroku"
+
+heroku git:remote -a umg-proyecto-java-avanzada
+
+git push heroku master
+
+heroku open
+
+
