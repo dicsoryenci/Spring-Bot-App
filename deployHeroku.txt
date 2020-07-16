@@ -35,4 +35,8 @@ git commit -m "data.sql added"
 
 git push heroku master
 
+heroku open
+
+heroku logs --tail
+
 
