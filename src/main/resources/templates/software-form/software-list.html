@@ -1,0 +1,50 @@
+
+<div class="table-responsive">
+	<table id="softwareList"
+		class="table table-bordered table-hover table-striped">
+		<thead class="thead-light">
+			<tr>
+				<th scope="col">#</th>
+				<th scope="col">Name</th>
+				<th scope="col">Concurrence</th>
+				<th scope="col">Impact</th>
+				<th scope="col">Provider</th>
+				<th scope="col">Related Process</th>
+				<th scope="col">Equipment</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="software: ${softwareList}">
+				<td th:text="${software.id}"></td>
+				<td th:text="${software.name}"></td>
+				<td th:text="${software.concurrence}"></td>
+				<td th:text="${software.impact}"></td>
+				<td th:text="${software.provider}"></td>
+				<td th:text="${software.relatedProcess}"></td>
+				<td th:text="${software.equipment.ip}"></td>
+				<td>
+				<span th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+					<a href="#" th:href="@{'/editSoftware/'+ ${software.id}}"><i class="fas fa-edit"></i></a>
+					</span>
+					<span th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" >
+					| <a href="#" th:onclick="'javascript:confirmDelete(\''+ ${software.id} +'\');'"><i class="fas fa-user-times"></i></a>
+					</span>
+			</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="alert alert-danger text-center" th:if="${listErrorMessage}" th:text="${listErrorMessage}">Error Message</div>
+</div>
+
+<script type="text/javascript">
+function confirmDelete(id){
+	$('#deleteModal').modal('show');
+	$("#softwareIdHiddenInput").val(id);
+}
+
+function deleteSoftware(){
+	var id = $("#softwareIdHiddenInput").val();
+    window.location = "deleteSoftware/"+id;
+}
+</script>

@@ -1,0 +1,61 @@
+<div th:with="disableFields=!${editMode} and ${#authorization.expression('hasRole(''ROLE_USER'')')}">
+
+<form class="form" role="form" autocomplete="off" th:object="${softwareForm}" th:action="${signup}?@{/signup}:(${editMode} ?@{/editSoftware} :@{/softwareForm})" method="post">
+
+	<!--Es necesario para poder pasar la validacion del Model-->
+	<input class="form-control" type=hidden th:field="${softwareForm.id}"  th:if="${editMode}">
+	<div class="form-group row">
+		<label class="col-lg-3 col-form-label form-control-label">Software Name</label>
+		<div class="col-lg-9">
+			<input class="form-control" type="text" th:field="${softwareForm.name}" th:disabled="${disableFields}">
+			<div class="alert-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+		</div>
+	</div>
+	<div class="form-group row">
+		<label class="col-lg-3 col-form-label form-control-label">Concurrence</label>
+		<div class="col-lg-9">
+			<input class="form-control" type="text" th:field="${softwareForm.concurrence}" th:disabled="${disableFields}">
+			<div class="alert-danger" th:if="${#fields.hasErrors('concurrence')}" th:errors="*{concurrence}">Concurrence Error</div>
+		</div>
+	</div>
+	<div class="form-group row">
+		<label class="col-lg-3 col-form-label form-control-label">Impact</label>
+		<div class="col-lg-9">
+			<input class="form-control" type="text" th:field="${softwareForm.impact}" th:disabled="${disableFields}">
+			<div class="alert-danger" th:if="${#fields.hasErrors('impact')}" th:errors="*{impact}">Impact Error</div>
+		</div>
+	</div>
+	<div class="form-group row">
+		<label class="col-lg-3 col-form-label form-control-label">Provider</label>
+		<div class="col-lg-9">
+			<input class="form-control" type="text" th:field="${softwareForm.provider}" th:disabled="${disableFields}">
+			<div class="alert-danger" th:if="${#fields.hasErrors('provider')}" th:errors="*{provider}">Provider Error</div>
+		</div>
+	</div>
+	<div class="form-group row">
+		<label class="col-lg-3 col-form-label form-control-label">Related Process</label>
+		<div class="col-lg-9">
+			<input class="form-control" type="text" th:field="${softwareForm.relatedProcess}" th:disabled="${disableFields}">
+			<div class="alert-danger" th:if="${#fields.hasErrors('relatedProcess')}" th:errors="*{relatedProcess}">Related Process Error</div>
+		</div>
+	</div>
+	<div class="form-group row">
+		<label th:text="Equipments" class="col-lg-3 col-form-label form-control-label"></label>
+		<div class="col-lg-9">
+			<select class="form-control" th:size="3" th:field="${softwareForm.equipment}" th:disabled="${disableFields}">
+				<option th:each="equipment :${equipments}" th:value="${equipment.id}" th:text="${equipment.ip}">
+				</option>
+			</select>
+			<div class="alert-danger" th:if="${#fields.hasErrors('equipment')}" th:errors="*{equipment}">Area Error</div>
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="col-lg-12 text-center">
+			<a class="btn btn-secondary" th:href="@{'/softwareForm/cancel'}">Cancel</a>
+			<input type="submit" class="btn btn-primary" value="Save Changes" th:value="${editMode}?'Save Software':'Create Software'">
+		</div>
+	</div>
+	<div class="alert alert-danger text-center" th:if="${formErrorMessage}" th:text="${formErrorMessage}">Error Message</div>
+	<div class="alert alert-success text-center d-none" id="formSuccess" th:if="${editMode}" >Success Message</div>
+</form>
+</div>
