@@ -1,0 +1,30 @@
+<div th:with="disableFields=!${editMode} and ${#authorization.expression('hasRole(''ROLE_USER'')')}">
+
+<form class="form" role="form" autocomplete="off" th:object="${backupForm}" th:action="${signup}?@{/signup}:(${editMode} ?@{/editBackup} :@{/backupForm})" method="post">
+
+	<!--Es necesario para poder pasar la validacion del Model-->
+	<input class="form-control" type=hidden th:field="${backupForm.id}"  th:if="${editMode}">
+	<div class="form-group row">
+		<label class="col-lg-3 col-form-label form-control-label">Description</label>
+		<div class="col-lg-9">
+			<input class="form-control" type="text" th:field="${backupForm.backupDescription}" th:disabled="${disableFields}">
+			<div class="alert-danger" th:if="${#fields.hasErrors('backupDescription')}" th:errors="*{backupDescription}">Description Error</div>
+		</div>
+	</div>
+	<div class="form-group row">
+		<label class="col-lg-3 col-form-label form-control-label">Level</label>
+		<div class="col-lg-9">
+			<input class="form-control" type="text" th:field="${backupForm.backupLevel}" th:disabled="${disableFields}">
+			<div class="alert-danger" th:if="${#fields.hasErrors('backupLevel')}" th:errors="*{backupLevel}">Level Error</div>
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="col-lg-12 text-center">
+			<a class="btn btn-secondary" th:href="@{'/backupForm/cancel'}">Cancel</a>
+			<input type="submit" class="btn btn-primary" value="Save Changes" th:value="${editMode}?'Save Backup':'Create Backup'">
+		</div>
+	</div>
+	<div class="alert alert-danger text-center" th:if="${formErrorMessage}" th:text="${formErrorMessage}">Error Message</div>
+	<div class="alert alert-success text-center d-none" id="formSuccess" th:if="${editMode}" >Success Message</div>
+</form>
+</div>
