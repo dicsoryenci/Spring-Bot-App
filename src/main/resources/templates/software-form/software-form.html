@@ -52,7 +52,7 @@
 	<div class="form-group row">
 		<div class="col-lg-12 text-center">
 			<a class="btn btn-secondary" th:href="@{'/softwareForm/cancel'}">Cancel</a>
-			<input type="submit" class="btn btn-primary" value="Save Changes" th:value="${editMode}?'Save Software':'Create Software'">
+			<input type="submit" class="btn btn-primary" value="Save Changes" th:disabled="${disableFields}" th:value="${editMode}?'Save Software':'Create Software'">
 		</div>
 	</div>
 	<div class="alert alert-danger text-center" th:if="${formErrorMessage}" th:text="${formErrorMessage}">Error Message</div>

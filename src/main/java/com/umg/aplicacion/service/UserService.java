@@ -2,11 +2,14 @@ package com.umg.aplicacion.service;
 
 import com.umg.aplicacion.Exception.UsernameOrIdNotFound;
 import com.umg.aplicacion.dto.ChangePasswordForm;
+import com.umg.aplicacion.entity.Role;
 import com.umg.aplicacion.entity.User;
 
 public interface UserService {
 	
 	public Iterable<User> getAllUsers();
+	
+	public Iterable<User> getAllUsersByRoles(Role role) throws Exception;
 
 	public User createUser(User user) throws Exception;
 	
@@ -17,4 +20,6 @@ public interface UserService {
 	public void deleteUser(Long id) throws UsernameOrIdNotFound;
 	
 	public User changePassword(ChangePasswordForm form) throws Exception;
+	
+	public User getLoggedUser() throws Exception;
 }

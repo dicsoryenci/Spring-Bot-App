@@ -1,0 +1,36 @@
+<div th:with="disableFields=false">
+
+<form class="form" role="form" autocomplete="off" th:object="${requestDetailForm}" th:action="${signup}?@{/signup}:(${editMode} ?@{/editRequest} :@{/requestForm})" method="post">
+
+	<!--Es necesario para poder pasar la validacion del Model-->
+	<input class="form-control" type=hidden th:field="${requestDetailForm.id}"  th:if="${editMode}">
+	<div class="form-group row">
+		<label th:text="Backups" class="col-lg-3 col-form-label form-control-label"></label>
+		<div class="col-lg-9">
+			<select class="form-control" th:size="3" th:field="${requestDetailForm.backup}" th:disabled="${disableFields}">
+				<option th:each="backup :${backups}" th:value="${backup.id}" th:text="${backup.backupLevel}">
+				</option>
+			</select>
+			<div class="alert-danger" th:if="${#fields.hasErrors('backup')}" th:errors="*{backup}">Backup Error</div>
+		</div>
+	</div>
+	<div class="form-group row">
+		<label th:text="Softwares" class="col-lg-3 col-form-label form-control-label"></label>
+		<div class="col-lg-9">
+			<select class="form-control" th:size="3" th:field="${requestDetailForm.software}" th:disabled="${disableFields}">
+				<option th:each="software :${softwares}" th:value="${software.id}" th:text="${software.name}">
+				</option>
+			</select>
+			<div class="alert-danger" th:if="${#fields.hasErrors('software')}" th:errors="*{software}">Software Error</div>
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="col-lg-12 text-center">
+			<a class="btn btn-secondary" th:href="@{'/requestForm/cancel'}">Cancel</a>
+			<input type="submit" class="btn btn-primary" value="Save Changes" th:disabled="${disableFields}" th:value="${editMode}?'Save Request':'Create Request'">
+		</div>
+	</div>
+	<div class="alert alert-danger text-center" th:if="${formErrorMessage}" th:text="${formErrorMessage}">Error Message</div>
+	<div class="alert alert-success text-center d-none" id="formSuccess" th:if="${editMode}" >Success Message</div>
+</form>
+</div>

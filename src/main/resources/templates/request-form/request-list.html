@@ -1,0 +1,79 @@
+
+<div class="table-responsive">
+	<table id="requestList"
+		class="table table-bordered table-hover table-striped">
+		<thead class="thead-light">
+			<tr>
+				<th scope="col">#</th>
+				<th scope="col">Application Date</th>
+				<th scope="col">Assignment Date</th>
+				<th scope="col">Delivery Date</th>
+				<th scope="col">User Request</th>
+				<th scope="col">User Operator</th>
+				<th scope="col">Status</th>
+				<th scope="col">Backup Type</th>
+				<th scope="col">Software</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="requestDetail: ${requestDetailList}">
+				<td th:text="${requestDetail.request.id}"></td>
+				<td th:text="${#dates.format(requestDetail.request.applicationDate,'dd MMM yyyy HH:mm')}"></td>
+				<td th:text="${#dates.format(requestDetail.request.assignmentDate,'dd MMM yyyy HH:mm')}"></td>
+				<td th:text="${#dates.format(requestDetail.request.deliveryDate,'dd MMM yyyy HH:mm')}"></td>
+				<td th:text="${requestDetail.request.userRequest.username}"></td>
+				<td th:text="${#objects.nullSafe(requestDetail?.request?.operatorUser?.username,'Not Assigned')}"></td>
+				<td th:switch="${requestDetail.request.status}">
+				  <label th:class="${requestDetail.request.status} == 'I' ? 'badge badge-primary' : (${requestDetail.request.status} == 'A' ? 'badge badge-secondary' : (${requestDetail.request.status} == 'E' ? 'badge badge-warning' : 'badge badge-success')) ">
+					<span th:case="'I'" th:text="Ingresada" />
+				    <span th:case="'A'" th:text="Asignada" />
+				    <span th:case="'E'" th:text="'En Proceso'" />
+				    <span th:case="'F'" th:text="Finalizada" />
+				   </label>
+				</td>
+				<td th:text="${requestDetail.backup.backupLevel}"></td>
+				<td th:text="${requestDetail.software.name}"></td>
+				<td>
+				<span th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')} and ${requestDetail.request.status} == 'I'">
+					<a href="#" th:onclick="'javascript:assignUser(\''+ ${requestDetail.request.id} +'\');'" data-toggle="tooltip" title="Assign User"><i class="fas fa-users"></i></a>
+					</span>
+					<span th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')} and ${requestDetail.request.status} == 'A'" >
+					<a href="#" th:href="@{'/markInProcess/'+ ${requestDetail.request.id}}" data-toggle="tooltip" title="Mark as in process"><i class="fas fa-spinner"></i></a>
+					</span>
+					<span th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')} and ${requestDetail.request.status} == 'E'" >
+					<a href="#" th:href="@{'/markAsFinished/'+ ${requestDetail.request.id}}" data-toggle="tooltip" title="Backup Generated"><i class="fas fa-check-square"></i></a>
+					</span>
+			</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="alert alert-danger text-center" th:if="${listErrorMessage}" th:text="${listErrorMessage}">Error Message</div>
+</div>
+<script type="text/javascript">
+function assignUser(id){
+	var params = {};
+	params["id"] = id;
+	
+	$.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/requestForm/user",
+        data: JSON.stringify(params),
+        dataType: 'text',
+        cache: false,
+        async: false,
+        timeout: 600000,
+        success: function (data) {
+        	$('#assignUserModal').modal('show');
+        	$("#id").val(id);
+        	console.log("SUCCESS: ", data);
+        	
+        },
+        error: function (e) {
+        	console.log("ERROR: ", e);
+        }
+    });
+
+}
+</script>

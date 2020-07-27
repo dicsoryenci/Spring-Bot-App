@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.umg.aplicacion.Exception.CustomeFieldValidationException;
 import com.umg.aplicacion.Exception.UsernameOrIdNotFound;
 import com.umg.aplicacion.dto.ChangePasswordForm;
+import com.umg.aplicacion.entity.Role;
 import com.umg.aplicacion.entity.User;
 import com.umg.aplicacion.repository.UserRepository;
 
@@ -29,6 +30,12 @@ public class UserServiceImpl implements UserService {
 	public Iterable<User> getAllUsers() {
 		// TODO Auto-generated method stub
 		return repository.findAll();
+	}
+	
+	@Override
+	public Iterable<User> getAllUsersByRoles(Role role) {
+		// TODO Auto-generated method stub
+		return repository.findByRoles(role);
 	}
 	
 	private boolean checkUsernameAvailable(User user) throws Exception {
